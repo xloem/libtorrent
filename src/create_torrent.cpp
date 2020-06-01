@@ -645,7 +645,7 @@ namespace {
 			entry& list = info["similar"];
 			for (auto const& ih : m_similar)
 			{
-				list.list().emplace_back(ih.to_string());
+				list.list().emplace_back(ih);
 			}
 		}
 
@@ -686,7 +686,7 @@ namespace {
 				}
 				if (!m_filehashes.empty())
 				{
-					info["sha1"] = m_filehashes[first].to_string();
+					info["sha1"] = m_filehashes[first];
 				}
 			}
 
@@ -744,7 +744,7 @@ namespace {
 					}
 					if (!m_filehashes.empty() && m_filehashes[i] != sha1_hash())
 					{
-						file_e["sha1"] = m_filehashes[i].to_string();
+						file_e["sha1"] = m_filehashes[i];
 					}
 				}
 			}
@@ -841,7 +841,7 @@ namespace {
 		auto const i = std::find_if(m_urls.begin(), m_urls.end()
 			, [&url](announce_entry const& ae) { return ae.first == url; });
 		if (i != m_urls.end()) return;
-		m_urls.emplace_back(url.to_string(), tier);
+		m_urls.emplace_back(url, tier);
 
 		std::sort(m_urls.begin(), m_urls.end()
 			, [](announce_entry const& lhs, announce_entry const& rhs)

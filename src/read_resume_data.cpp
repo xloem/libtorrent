@@ -97,7 +97,7 @@ namespace {
 			return ret;
 		}
 
-		ret.name = rd.dict_find_string_value("name").to_string();
+		ret.name = rd.dict_find_string_value("name");
 
 		if (info_hash.size() == 20)
 			ret.info_hash.v1.assign(info_hash.data());
@@ -209,11 +209,11 @@ namespace {
 		apply_flag(ret.flags, rd, "disable_lsd", torrent_flags::disable_lsd);
 		apply_flag(ret.flags, rd, "disable_pex", torrent_flags::disable_pex);
 
-		ret.save_path = rd.dict_find_string_value("save_path").to_string();
+		ret.save_path = rd.dict_find_string_value("save_path");
 
 #if TORRENT_ABI_VERSION == 1
 		// deprecated in 1.2
-		ret.url = rd.dict_find_string_value("url").to_string();
+		ret.url = rd.dict_find_string_value("url");
 #endif
 
 		bdecode_node const mapped_files = rd.dict_find_list("mapped_files");
@@ -223,7 +223,7 @@ namespace {
 			{
 				auto new_filename = mapped_files.list_string_value_at(i);
 				if (new_filename.empty()) continue;
-				ret.renamed_files[file_index_t(i)] = new_filename.to_string();
+				ret.renamed_files[file_index_t(i)] = new_filename;
 			}
 		}
 
@@ -272,7 +272,7 @@ namespace {
 
 				for (int j = 0; j < tier_list.list_size(); ++j)
 				{
-					ret.trackers.push_back(tier_list.list_string_value_at(j).to_string());
+					ret.trackers.emplace_back(tier_list.list_string_value_at(j));
 					ret.tracker_tiers.push_back(tier);
 				}
 				++tier;
@@ -298,7 +298,7 @@ namespace {
 			{
 				auto url = url_list.list_string_value_at(i);
 				if (url.empty()) continue;
-				ret.url_seeds.push_back(url.to_string());
+				ret.url_seeds.emplace_back(url);
 			}
 		}
 
@@ -308,7 +308,7 @@ namespace {
 			{
 				auto url = httpseeds.list_string_value_at(i);
 				if (url.empty()) continue;
-				ret.http_seeds.push_back(url.to_string());
+				ret.http_seeds.emplace_back(url);
 			}
 		}
 
